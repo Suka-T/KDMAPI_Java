@@ -2,6 +2,10 @@
 
 Java JNA Wrapper for **OmniMIDI (KDMAPI)**. This library provides a high-level Java interface to interact with the OmniMIDI driver, enabling advanced MIDI processing and synthesizer control for Java applications.
 
+## 🔗 References
+
+- [OmniMIDI](https://github.com/KaleidonKep99/OmniMIDI) by KaleidonKep99.
+
 ## 🚀 Features
 
 - **Full KDMAPI Support**: Access all essential functions provided by the KDMAPI.
