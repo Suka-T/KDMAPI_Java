@@ -40,7 +40,7 @@ public class OmniMIDIReceiver extends OmniDirectReceiver {
     public OmniMIDIReceiver() {
     	super();
     	
-    	if (!KDMAPI.InitializeKDMAPIStream()) {
+    	if (!KDMAPIW.InitializeKDMAPIStream()) {
             throw new RuntimeException("Failed Open OmniMIDI Receiver");
         }
     	this.isOpen = true;
@@ -56,8 +56,8 @@ public class OmniMIDIReceiver extends OmniDirectReceiver {
     	super.close();
     	
         if (isOpen) {
-        	KDMAPI.ResetKDMAPIStream();
-    		KDMAPI.TerminateKDMAPIStream();
+        	KDMAPIW.ResetKDMAPIStream();
+    		KDMAPIW.TerminateKDMAPIStream();
     		isOpen = false;
         }
     }

@@ -39,7 +39,7 @@ public class Main {
             return;
         }
         
-        if (!KDMAPI.IsKDMAPIAvailable()) {
+        if (!KDMAPIW.IsKDMAPIAvailable()) {
         	System.err.println("Unavailable KDMAPI");
             return;
         }

@@ -16,7 +16,7 @@ public class OmniDirectReceiver implements Receiver {
             int msg = sm.getStatus() | (sm.getData1() << 8) | (sm.getData2() << 16);
             
             // SEND: Short Msg
-            KDMAPI.SendDirectData(msg);
+            KDMAPIW.SendDirectData(msg);
             
         }
         else if (message instanceof SysexMessage) {
@@ -27,7 +27,7 @@ public class OmniDirectReceiver implements Receiver {
             mem.write(0, data, 0, data.length);
             
             // SEND: SysEx（Long Data）
-            KDMAPI.SendDirectLongDataNoBuf(mem, (int) mem.size());
+            KDMAPIW.SendDirectLongDataNoBuf(mem, (int) mem.size());
         }
 	}
 
