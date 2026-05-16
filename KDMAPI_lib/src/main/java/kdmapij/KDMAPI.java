@@ -36,7 +36,7 @@ import com.sun.jna.ptr.IntByReference;
  * @author <a href="https://github.com/Suka-T">Suka</a>
  * @version 14.8.5 (Target OmniMIDI Version)
  */
-public class KDMAPI {
+class KDMAPI {
 
     static {
         // Direct Mapping: Binds DLL function addresses directly to Java methods.
@@ -49,68 +49,68 @@ public class KDMAPI {
      * ------------------------------------------------------------------------- */
 
     /** Initializes the KDMAPI stream and establishes a connection to the OmniMIDI engine. */
-    public static native boolean InitializeKDMAPIStream();
+    static native boolean InitializeKDMAPIStream();
 
     /** Terminates the KDMAPI stream and releases allocated resources. */
-    public static native void TerminateKDMAPIStream();
+    static native void TerminateKDMAPIStream();
 
     /** Resets the synthesizer engine state and silences all active notes. */
-    public static native void ResetKDMAPIStream();
+    static native void ResetKDMAPIStream();
 
     /* -------------------------------------------------------------------------
      * Short Message Transmission (Note On/Off, Control Change, etc.)
      * ------------------------------------------------------------------------- */
 
     /** Sends a custom event to the driver. */
-    public static native boolean SendCustomEvent(int eventType, int chan, int param);
+    static native boolean SendCustomEvent(int eventType, int chan, int param);
 
     /** Sends a MIDI short message via the internal driver buffer. */
-    public static native void SendDirectData(int dwMsg);
+    static native void SendDirectData(int dwMsg);
 
     /** 
      * Sends a MIDI short message immediately, bypassing the internal buffer.
      * Ideal for minimizing jitter in time-critical performances.
      */
-    public static native void SendDirectDataNoBuf(int dwMsg);
+    static native void SendDirectDataNoBuf(int dwMsg);
 
     /* -------------------------------------------------------------------------
      * Long Message / System Exclusive (SysEx)
      * ------------------------------------------------------------------------- */
 
     /** Sends long data, such as System Exclusive messages. */
-    public static native int SendDirectLongData(Pointer lpMidiHdr, int uSize);
+    static native int SendDirectLongData(Pointer lpMidiHdr, int uSize);
 
     /** Sends long data immediately, bypassing the internal buffer. */
-    public static native int SendDirectLongDataNoBuf(Pointer lpMidiHdr, int uSize);
+    static native int SendDirectLongDataNoBuf(Pointer lpMidiHdr, int uSize);
 
     /** Prepares a Windows MIDIHDR structure for use by the driver. */
-    public static native int PrepareLongData(Pointer lpMidiHdr, int uSize);
+    static native int PrepareLongData(Pointer lpMidiHdr, int uSize);
 
     /** Unprepares a MIDIHDR structure previously processed by PrepareLongData. */
-    public static native int UnprepareLongData(Pointer lpMidiHdr, int uSize);
+    static native int UnprepareLongData(Pointer lpMidiHdr, int uSize);
 
     /* -------------------------------------------------------------------------
      * Driver Settings & Information
      * ------------------------------------------------------------------------- */
 
     /** Dynamically modifies driver settings. */
-    public static native boolean DriverSettings(int setting, int mode, Pointer value, int cbValue);
+    static native boolean DriverSettings(int setting, int mode, Pointer value, int cbValue);
 
     /** Returns a pointer to the driver's debug information structure. */
-    public static native Pointer GetDriverDebugInfo();
+    static native Pointer GetDriverDebugInfo();
 
     /* -------------------------------------------------------------------------
      * Diagnostics & Utilities
      * ------------------------------------------------------------------------- */
 
     /** Loads a custom SoundFont list from the specified directory. */
-    public static native void LoadCustomSoundFontsList(WString directory);
+    static native void LoadCustomSoundFontsList(WString directory);
 
     /** Retrieves the internal high-precision timer value from the driver. */
-    public static native long timeGetTime64();
+    static native long timeGetTime64();
 
     /** Checks if KDMAPI is available (i.e., OmniMIDI is active and accessible) on the current system. */
-    public static native boolean IsKDMAPIAvailable();
+    static native boolean IsKDMAPIAvailable();
 
     /** 
      * Retrieves the KDMAPI version information from the installed driver.
@@ -120,8 +120,8 @@ public class KDMAPI {
      * @param revision Reference to receive the revision number.
      * @return true if the version information was successfully retrieved.
      */
-    public static native boolean ReturnKDMAPIVer(IntByReference major, IntByReference minor, IntByReference build, IntByReference revision);
+    static native boolean ReturnKDMAPIVer(IntByReference major, IntByReference minor, IntByReference build, IntByReference revision);
     
     /** Provides low-level message transmission compatible with the Windows Multimedia API (modMessage). */
-    public static native int modMessage(int uDeviceID, int uMsg, Pointer dwUser, Pointer dwParam1, Pointer dwParam2);
+    static native int modMessage(int uDeviceID, int uMsg, Pointer dwUser, Pointer dwParam1, Pointer dwParam2);
 }

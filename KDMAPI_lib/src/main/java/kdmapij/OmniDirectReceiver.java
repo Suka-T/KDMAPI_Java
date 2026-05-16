@@ -5,8 +5,6 @@ import javax.sound.midi.Receiver;
 import javax.sound.midi.ShortMessage;
 import javax.sound.midi.SysexMessage;
 
-import com.sun.jna.Memory;
-
 public class OmniDirectReceiver implements Receiver {
 
 	@Override
@@ -23,11 +21,8 @@ public class OmniDirectReceiver implements Receiver {
             SysexMessage sy = (SysexMessage) message;
             byte[] data = sy.getMessage();
             
-            Memory mem = new Memory(data.length);
-            mem.write(0, data, 0, data.length);
-            
             // SEND: SysEx（Long Data）
-            KDMAPIW.SendDirectLongDataNoBuf(mem, (int) mem.size());
+            KDMAPIW.SendDirectLongDataNoBuf(data);
         }
 	}
 

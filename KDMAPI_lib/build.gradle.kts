@@ -39,8 +39,9 @@ tasks {
     	// 重複が発生した場合、新しい方のファイルを優先して上書きする設定を追加
         duplicatesStrategy = DuplicatesStrategy.INCLUDE
         
-        from("src/main/resources") {
-            include("**/*.dll")
-        }
+        //from("src/main/resources") {
+        //    include("**/*.dll")
+        //}
+        exclude("**/*.dll")
     }
 }

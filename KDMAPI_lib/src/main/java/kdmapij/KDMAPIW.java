@@ -1,5 +1,6 @@
 package kdmapij;
 
+import com.sun.jna.Memory;
 import com.sun.jna.Pointer;
 import com.sun.jna.WString;
 import com.sun.jna.ptr.IntByReference;
@@ -26,6 +27,40 @@ import com.sun.jna.ptr.IntByReference;
  */
 public class KDMAPIW {
 	private static final String OS = System.getProperty("os.name").toLowerCase();
+	
+	private static boolean isDllAvailable = false;
+    private static boolean checkAttempted = false;
+	
+	/**
+	 * Load the KDMAPI DLL.<br>
+	 * ※This method must be called on the first launch.
+	 * 
+	 * @return
+	 */
+	public static boolean LoadKDMAPILibrary() {
+		
+		if (!OS.contains("win")) {
+			// No Supported OS. 
+			isDllAvailable = false;
+			checkAttempted = true;
+		}
+		
+        if (!checkAttempted) {
+            try {
+                // we can trigger JNA's Direct Mapping (DLL loading).
+            	// This can be checked by using dummy constants within the class or by calling appropriate methods.
+            	// (Here, as an example, we check whether the KDMAPI class exists and can be loaded.)
+                Class.forName("kdmapij.KDMAPI"); 
+                
+                isDllAvailable = true;
+            } catch (Throwable t) {
+                System.err.println("[KDMAPIW] OmniMIDI.dll is not installed or could not be loaded.");
+                isDllAvailable = false;
+            }
+            checkAttempted = true;
+        }
+        return isDllAvailable;
+	}
 	
     /** Initializes the KDMAPI stream and establishes a connection to the OmniMIDI engine. */
     public static boolean InitializeKDMAPIStream() {
@@ -61,13 +96,17 @@ public class KDMAPIW {
     }
     
     /** Sends long data, such as System Exclusive messages. */
-    public static int SendDirectLongData(Pointer lpMidiHdr, int uSize) {
-    	return KDMAPI.SendDirectLongData(lpMidiHdr, uSize);
+    public static int SendDirectLongData(byte[] data) {
+    	Memory mem = new Memory(data.length);
+        mem.write(0, data, 0, data.length);
+    	return KDMAPI.SendDirectLongData(mem, (int) mem.size());
     }
 
     /** Sends long data immediately, bypassing the internal buffer. */
-    public static int SendDirectLongDataNoBuf(Pointer lpMidiHdr, int uSize) {
-    	return KDMAPI.SendDirectLongDataNoBuf(lpMidiHdr, uSize);
+    public static int SendDirectLongDataNoBuf(byte[] data) {
+    	Memory mem = new Memory(data.length);
+        mem.write(0, data, 0, data.length);
+    	return KDMAPI.SendDirectLongDataNoBuf(mem, (int) mem.size());
     }
 
     /** Prepares a Windows MIDIHDR structure for use by the driver. */
@@ -102,8 +141,7 @@ public class KDMAPIW {
 	
     /** Checks if KDMAPI is available (i.e., OmniMIDI is active and accessible) on the current system. */
 	public static boolean IsKDMAPIAvailable() {
-		if (!OS.contains("win")) {
-			// No Supported OS. 
+		if (!isDllAvailable) {
 			return false;
 		}
 		return KDMAPI.IsKDMAPIAvailable();
@@ -111,14 +149,28 @@ public class KDMAPIW {
 	
     /** 
      * Retrieves the KDMAPI version information from the installed driver.
-     * @param major Reference to receive the major version number.
-     * @param minor Reference to receive the minor version number.
-     * @param build Reference to receive the build number.
-     * @param revision Reference to receive the revision number.
-     * @return true if the version information was successfully retrieved.
      */
-    public static boolean ReturnKDMAPIVer(IntByReference major, IntByReference minor, IntByReference build, IntByReference revision) {
-    	return KDMAPI.ReturnKDMAPIVer(major, minor, build, revision);
+    public static String ReturnKDMAPIVer() {
+    	if (!isDllAvailable) {
+    		return "Unknown Version (OmniMIDI not found)";
+		}
+    	
+    	IntByReference major = new IntByReference();
+        IntByReference minor = new IntByReference();
+        IntByReference build = new IntByReference();
+        IntByReference revision = new IntByReference();
+        
+        try {
+            KDMAPI.ReturnKDMAPIVer(major, minor, build, revision);
+            return String.format("%d.%d.%d.%d", 
+                major.getValue(), 
+                minor.getValue(), 
+                build.getValue(), 
+                revision.getValue()
+            );
+        } catch (Throwable t) {
+            return "Unknown Version (OmniMIDI not found)";
+        }
     }
     
     /** Provides low-level message transmission compatible with the Windows Multimedia API (modMessage). */

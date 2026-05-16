@@ -39,6 +39,13 @@ public class Main {
             return;
         }
         
+        if (KDMAPIW.LoadKDMAPILibrary()) {
+        	System.out.println("KDMAPI Load Success");
+        }
+        else {
+        	System.err.println("KDMAPI Load Fail");
+        }
+        
         if (!KDMAPIW.IsKDMAPIAvailable()) {
         	System.err.println("Unavailable KDMAPI");
             return;
