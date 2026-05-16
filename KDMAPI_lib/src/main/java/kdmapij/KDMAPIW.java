@@ -26,6 +26,10 @@ import com.sun.jna.ptr.IntByReference;
  * @author Suka
  */
 public class KDMAPIW {
+	
+	/** KDMAPIW Library Version */
+	public static final String VERSION_OF_WRAPPER = "1.01";
+	
 	private static final String OS = System.getProperty("os.name").toLowerCase();
 	
 	private static boolean isDllAvailable = false;
