@@ -20,11 +20,21 @@ Java JNA Wrapper for **OmniMIDI (KDMAPI)**. This library provides a high-level J
 - **Driver**: It is recommended to have the [OmniMIDI driver](https://github.com/KaleidonKep99/OmniMIDI) installed on the host system.
 
 ## 💻 Usage
-- This calls the native KDMAPI.
+- Please be sure to read `LoadKDMAPILibrary()` when starting up.
 ```java
-if (KDMAPI.InitializeKDMAPI()) {
-    KDMAPI.SendDirectData(0x90, 0x3C, 0x7F); // Note On: C4
-    KDMAPI.TerminateKDMAPI();
+if (KDMAPIW.LoadKDMAPILibrary()) {
+    System.out.println("KDMAPI Load Success");
+}
+else {
+    System.err.println("OmniMIDI is not installed.");
+}
+```
+
+- This calls a native function of the KDMAPI.
+```java
+if (KDMAPIW.InitializeKDMAPI()) {
+    KDMAPIW.SendDirectData(0x90, 0x3C, 0x7F); // Note On: C4
+    KDMAPIW.TerminateKDMAPI();
 }
 ```
 
