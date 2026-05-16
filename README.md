@@ -11,11 +11,10 @@ Java JNA Wrapper for **OmniMIDI (KDMAPI)**. This library provides a high-level J
 - **Full KDMAPI Support**: Access all essential functions provided by the KDMAPI.
 - **Easy Integration**: Built with [JNA (Java Native Access)](https://github.com/java-native-access/jna), eliminating the need for manual JNI headers.
 - **Type-Safe Wrappers**: Java-friendly mappings for C-style structures, constants, and callbacks.
-- **Bundled Binary**: Includes `OmniMIDI.dll` for immediate development and testing.
 
 ## 🛠 Prerequisites
 
-- **Java**: JDK 8 or higher.
+- **Java**: JDK 8 or higher.(JDK 21 is recommended.)
 - **OS**: Windows (OmniMIDI is a Windows-only MIDI driver).
 - **Driver**: It is recommended to have the [OmniMIDI driver](https://github.com/KaleidonKep99/OmniMIDI) installed on the host system.
 
