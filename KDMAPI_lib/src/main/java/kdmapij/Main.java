@@ -10,44 +10,49 @@ import javax.sound.midi.Transmitter;
 /**
  * Main Entry Point for RainMIDI Playback via KDMAPI
  * 
- * <p>This class demonstrates the integration of the Java Standard Sequencer with 
- * the custom OmniMIDI Receiver. It bypasses the default Windows MIDI mapper by 
- * routing MIDI events directly to the OmniMIDI driver using the low-latency 
- * KDMAPI (Direct API).</p>
+ * <p>
+ * This class demonstrates the integration of the Java Standard Sequencer with
+ * the custom OmniMIDI Receiver. It bypasses the default Windows MIDI mapper by
+ * routing MIDI events directly to the OmniMIDI driver using the low-latency
+ * KDMAPI (Direct API).
+ * </p>
  * 
  * <h3>Execution Flow:</h3>
  * <ol>
- *   <li><b>System Check:</b> Verifies the existence of the MIDI file and ensures 
- *       the KDMAPI driver is available on the host system.</li>
- *   <li><b>Direct Mapping:</b> Disables the default Java Sound synthesizer and 
- *       attaches a {@link OmniMIDIReceiver} to the {@link Sequencer}'s transmitter.</li>
- *   <li><b>Playback:</b> Loads the MIDI {@link Sequence} and initiates real-time 
- *       event streaming to the native driver.</li>
+ * <li><b>System Check:</b> Verifies the existence of the MIDI file and ensures
+ * the KDMAPI driver is available on the host system.</li>
+ * <li><b>Direct Mapping:</b> Disables the default Java Sound synthesizer and
+ * attaches a {@link OmniMIDIReceiver} to the {@link Sequencer}'s
+ * transmitter.</li>
+ * <li><b>Playback:</b> Loads the MIDI {@link Sequence} and initiates real-time
+ * event streaming to the native driver.</li>
  * </ol>
  * 
  * <h3>Usage:</h3>
- * <p>Run the application with the MIDI file path as the first argument:</p>
+ * <p>
+ * Run the application with the MIDI file path as the first argument:
+ * </p>
  * {@code java Main "C:\path\to\your\midifile.mid"}
  * 
  * @author <a href="https://github.com/Suka-T">Suka</a>
  */
 public class Main {
-	public static void main(String[] args) {
-        File midiFile = new File(args[0]); 
+    public static void main(String[] args) {
+        File midiFile = new File(args[0]);
         if (!midiFile.exists()) {
             System.err.println("Not found: " + midiFile.getAbsolutePath());
             return;
         }
-        
+
         if (KDMAPIW.LoadKDMAPILibrary()) {
-        	System.out.println("KDMAPI Load Success");
+            System.out.println("KDMAPI Load Success");
         }
         else {
-        	System.err.println("KDMAPI Load Fail");
+            System.err.println("KDMAPI Load Fail");
         }
-        
+
         if (!KDMAPIW.IsKDMAPIAvailable()) {
-        	System.err.println("Unavailable KDMAPI");
+            System.err.println("Unavailable KDMAPI");
             return;
         }
 
@@ -72,7 +77,8 @@ public class Main {
             System.out.println("Fin");
             sequencer.close();
 
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             e.printStackTrace();
         }
     }
